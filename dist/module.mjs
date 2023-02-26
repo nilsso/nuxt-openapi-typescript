@@ -3,6 +3,7 @@ import { defu } from 'defu';
 import openapiTS from 'openapi-typescript';
 
 const getSchemaUrl = (options) => {
+  console.log(options.apiSchemaUrl);
   if (options.apiSchemaUrl) {
     return options.apiSchemaUrl;
   }
@@ -18,7 +19,7 @@ const module = defineNuxtModule({
   },
   defaults: {
     apiUrl: process.env.API_URL,
-    apiSchemaUrl: process.env.API_URL,
+    apiSchemaUrl: void 0,
     apiSchemaFormat: "json"
   },
   // async setup(options, nuxt)
