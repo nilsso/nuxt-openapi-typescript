@@ -1,0 +1,8 @@
+{
+  "name": "nuxt-openapi-typescript",
+  "configKey": "openapiTS",
+  "compatibility": {
+    "nuxt": "^3"
+  },
+  "version": "1.0.0"
+}
