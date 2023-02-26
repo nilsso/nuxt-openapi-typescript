@@ -13,6 +13,7 @@ export interface ModuleOptions {
 }
 
 const getSchemaUrl = (options: ModuleOptions) => {
+  console.log(options.apiSchemaUrl)
   if (options.apiSchemaUrl) {
     return options.apiSchemaUrl
   }
@@ -29,7 +30,7 @@ export default defineNuxtModule<ModuleOptions>({
   },
   defaults: {
     apiUrl: process.env.API_URL,
-    apiSchemaUrl: process.env.API_URL,
+    apiSchemaUrl: undefined,
     apiSchemaFormat: 'json'
   },
   // async setup(options, nuxt)
