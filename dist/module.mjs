@@ -1,4 +1,4 @@
-import { defineNuxtModule, createResolver, useLogger, addTemplate, addImportsSources } from '@nuxt/kit';
+import { defineNuxtModule, createResolver, useLogger, addTemplate, addImports } from '@nuxt/kit';
 import { defu } from 'defu';
 import openapiTS from 'openapi-typescript';
 
@@ -43,15 +43,16 @@ const module = defineNuxtModule({
       filename: "nuxt-openapi-typescript.d.ts",
       write: true,
       getContents: () => {
-        return `import { useOpenAPI as _useOpenAPI } from '${resolve("runtime/composables/useOpenAPI")}'
+        return `import { useOpenAPI as _useOpenAPI } from '#imports/useOpenAPI'
 import { paths } from './api'
 
 export const useOpenAPI = _useOpenAPI<paths>            `;
       }
     });
-    addImportsSources({
-      from: "#build/nuxt-openapi-typescript",
-      imports: [["useOpenAPI", "useOpenAPI"]]
+    addImports({
+      name: "useOpenAPI",
+      as: "useOpenAPI",
+      from: resolve("runtime/composables/useOpenAPI")
     });
   }
 });
