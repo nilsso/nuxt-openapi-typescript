@@ -1,9 +1,16 @@
 import { Fetcher, type OpArgType } from 'openapi-typescript-fetch'
-import { PathsObject } from 'openapi-typescript'
 // import { paths } from '#build/api'
 import { useRuntimeConfig } from '#imports'
 
-export const useOpenAPI = <Paths extends PathsObject>() => {
+export declare type Method = 'get' | 'post' | 'put' | 'patch' | 'delete' | 'head' | 'options';
+
+export declare type OpenapiPaths<Paths> = {
+  [P in keyof Paths]: {
+    [M in Method]?: unknown;
+  };
+};
+
+export const useOpenAPI = <Paths extends OpenapiPaths<Paths>>() => {
   const { openapiTS } = useRuntimeConfig()
   const baseUrl = openapiTS.apiUrl
   const fetcher = Fetcher.for<Paths>()
