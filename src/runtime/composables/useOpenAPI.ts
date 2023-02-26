@@ -1,8 +1,9 @@
 import { Fetcher, type OpArgType } from 'openapi-typescript-fetch'
-import { paths as Paths } from '#build/api'
+import { PathsObject } from 'openapi-typescript'
+import { paths } from '#build/api'
 import { useRuntimeConfig } from '#imports'
 
-export const useOpenAPI = () => {
+export const useOpenAPI = <Paths extends PathsObject>() => {
   const { openapiTS } = useRuntimeConfig()
   const baseUrl = openapiTS.apiUrl
   const fetcher = Fetcher.for<Paths>()
@@ -24,7 +25,7 @@ export const useOpenAPI = () => {
     Params extends OpArgType<Paths[P][M]>
   >(p: P, m: M) => {
     const query = fetcher.path(p).method(m).create()
-    return (p?: Params) => query(p).then(({ data }) => data)
+    return (p: Params) => query(p).then(({ data }) => data)
   }
 
   return createApiFetch

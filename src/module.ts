@@ -30,7 +30,7 @@ export default defineNuxtModule<ModuleOptions>({
   },
   defaults: {
     apiUrl: process.env.API_URL,
-    apiSchemaUrl: undefined,
+    apiSchemaUrl: process.env.API_SCHEMA_URL,
     apiSchemaFormat: 'json'
   },
   // async setup(options, nuxt)
@@ -42,6 +42,11 @@ export default defineNuxtModule<ModuleOptions>({
     const logger = useLogger('nuxt-openapi-typescript')
     const schemaUrl = getSchemaUrl(options)
 
+    nuxt.options.runtimeConfig.public.openapiTS = defu(
+      nuxt.options.runtimeConfig.public.openapiTS,
+      options,
+    )
+
     logger.info(`fetching API schema at ${schemaUrl}`)
     addTemplate({
       filename: 'api.d.ts',
@@ -52,10 +57,5 @@ export default defineNuxtModule<ModuleOptions>({
       as: 'useOpenAPI',
       from: resolve('runtime/composables/useOpenAPI')
     })
-
-    nuxt.options.runtimeConfig.public.openapiTS = defu(
-      nuxt.options.runtimeConfig.public.openapiTS,
-      options,
-    )
   }
 })
