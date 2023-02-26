@@ -1,6 +1,6 @@
 import { type OpArgType } from 'openapi-typescript-fetch';
 import { PathsObject } from 'openapi-typescript';
-export declare const useOpenAPI: <Paths extends PathsObject>() => <P extends keyof Paths, M extends keyof Paths[P], Params extends OpArgType<Paths[P][M]>>(p: P, m: M) => (p: Params) => Promise<200 extends keyof (Paths[P][M] extends infer T ? T extends Paths[P][M] ? T extends {
+export declare const useOpenAPI: () => <Paths extends PathsObject>() => <P extends keyof Paths, M extends keyof Paths[P], Params extends OpArgType<Paths[P][M]>>(p: P, m: M) => (p: Params) => Promise<200 extends keyof (Paths[P][M] extends infer T ? T extends Paths[P][M] ? T extends {
     responses: infer R;
 } ? { [S in keyof R]: R[S] extends {
     schema?: infer S_1 | undefined;
