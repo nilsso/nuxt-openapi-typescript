@@ -1,6 +1,6 @@
 import { type OpArgType } from 'openapi-typescript-fetch';
-export declare type Method = 'get' | 'post' | 'put' | 'patch' | 'delete' | 'head' | 'options';
-export declare type OpenapiPaths<Paths> = {
+declare type Method = 'get' | 'post' | 'put' | 'patch' | 'delete' | 'head' | 'options';
+declare type OpenapiPaths<Paths> = {
     [P in keyof Paths]: {
         [M in Method]?: unknown;
     };
@@ -78,3 +78,4 @@ export declare const useOpenAPI: <Paths extends OpenapiPaths<Paths>>() => <P ext
         'application/json': infer C;
     };
 } ? C : S extends "default" ? R[S] : unknown; } : never : never : never) & "default"] : unknown>;
+export {};

@@ -16,6 +16,9 @@ Find and replace all on all files (CMD+SHIFT+F):
 
 This module adds a composable `useOpenAPI`.
 
+- <https://petstore3.swagger.io/#/store/getInventory>
+- <https://petstore3.swagger.io/api/v3/openapi.json>
+
 - [✨ &nbsp;Release Notes](/CHANGELOG.md)
 <!-- - [📖 &nbsp;Documentation](https://example.com) -->
 

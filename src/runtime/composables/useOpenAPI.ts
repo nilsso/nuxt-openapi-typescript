@@ -2,9 +2,9 @@ import { Fetcher, type OpArgType } from 'openapi-typescript-fetch'
 // import { paths } from '#build/api'
 import { useRuntimeConfig } from '#imports'
 
-export declare type Method = 'get' | 'post' | 'put' | 'patch' | 'delete' | 'head' | 'options';
+declare type Method = 'get' | 'post' | 'put' | 'patch' | 'delete' | 'head' | 'options';
 
-export declare type OpenapiPaths<Paths> = {
+declare type OpenapiPaths<Paths> = {
   [P in keyof Paths]: {
     [M in Method]?: unknown;
   };
