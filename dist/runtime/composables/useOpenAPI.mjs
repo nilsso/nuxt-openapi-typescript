@@ -1,6 +1,6 @@
 import { Fetcher } from "openapi-typescript-fetch";
 import { useRuntimeConfig } from "#imports";
-export const useOpenAPI = () => {
+export const _useOpenAPI = () => {
   const { openapiTS } = useRuntimeConfig();
   const baseUrl = openapiTS.apiUrl;
   const fetcher = Fetcher.for();

@@ -10,7 +10,7 @@ declare type OpenapiPaths<Paths> = {
   };
 };
 
-export const useOpenAPI = <Paths extends OpenapiPaths<Paths>>() => {
+export const _useOpenAPI = <Paths extends OpenapiPaths<Paths>>() => {
   const { openapiTS } = useRuntimeConfig()
   const baseUrl = openapiTS.apiUrl
   const fetcher = Fetcher.for<Paths>()

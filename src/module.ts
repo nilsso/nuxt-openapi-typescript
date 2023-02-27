@@ -1,4 +1,4 @@
-import { defineNuxtModule, createResolver, addImports, addTemplate, useLogger } from '@nuxt/kit'
+import { defineNuxtModule, createResolver, addImports, addImportsSources, addTemplate, useLogger } from '@nuxt/kit'
 import { defu } from 'defu'
 import openapiTS from 'openapi-typescript'
 
@@ -12,12 +12,16 @@ export interface ModuleOptions {
   apiSchemaFormat: 'json' | 'yaml'
 }
 
-const getSchemaUrl = (options: ModuleOptions) => {
-  console.log(options.apiSchemaUrl)
+const getUrl = (options: ModuleOptions) => {
+  const apiUrl = options.apiUrl
+  const schemaFormat = options.apiSchemaFormat
+  if (!apiUrl) {
+    throw new Error('API_URL not set')
+  }
   if (options.apiSchemaUrl) {
     return options.apiSchemaUrl
   }
-  return `${options.apiUrl}/schema/openapi.${options.apiSchemaFormat}`
+  return `${apiUrl}/schema/openapi.${schemaFormat}`
 }
 
 export default defineNuxtModule<ModuleOptions>({
@@ -34,44 +38,41 @@ export default defineNuxtModule<ModuleOptions>({
     apiSchemaFormat: 'json'
   },
   async setup(options, nuxt) {
-    if (!options.apiUrl) {
-      throw new Error('API_URL not set')
-    }
+    const schemaUrl = getUrl(options)
     const { resolve } = createResolver(import.meta.url)
     const logger = useLogger('nuxt-openapi-typescript')
-    const schemaUrl = getSchemaUrl(options)
 
     nuxt.options.runtimeConfig.public.openapiTS = defu(
       nuxt.options.runtimeConfig.public.openapiTS,
       options,
     )
 
-    logger.info(`fetching API schema at ${schemaUrl}`)
+    logger.info(`fetching API schema from ${schemaUrl}`)
     addTemplate({
       filename: 'api.d.ts',
       write: true,
       getContents: () => openapiTS(schemaUrl),
     })
     addTemplate({
-      filename: 'nuxt-openapi-typescript.d.ts',
+      filename: 'nuxt-openapi-typescript.ts',
       write: true,
       getContents: () => {
         return `\
-import { useOpenAPI as _useOpenAPI } from '#imports/useOpenAPI'
+import { _useOpenAPI } from '${resolve('runtime/composables/useOpenAPI')}'
 import { paths } from './api'
 
 export const useOpenAPI = _useOpenAPI<paths>\
             `
       }
     })
-    addImports({
-      name: 'useOpenAPI',
-      as: 'useOpenAPI',
-      from: resolve('runtime/composables/useOpenAPI')
+    addImportsSources({
+      from: '#build/nuxt-openapi-typescript',
+      imports: [['useOpenAPI', 'useOpenAPI']]
     })
-    // addImportsSources({
-    //   from: '#build/nuxt-openapi-typescript',
-    //   imports: [['useOpenAPI', 'useOpenAPI']]
+    // addImports({
+    //   name: '_useOpenAPI',
+    //   as: '_useOpenAPI',
+    //   from: resolve('runtime/composables/useOpenAPI')
     // })
   }
 })
